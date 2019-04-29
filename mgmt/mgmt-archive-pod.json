@@ -1,0 +1,108 @@
+{
+  "aliasColors": {},
+  "bars": false,
+  "dashLength": 10,
+  "dashes": false,
+  "datasource": "prometheus-archive",
+  "fill": 1,
+  "gridPos": {
+    "h": 7,
+    "w": 12,
+    "x": 0,
+    "y": 1
+  },
+  "id": 13,
+  "legend": {
+    "alignAsTable": true,
+    "avg": true,
+    "current": false,
+    "max": true,
+    "min": false,
+    "rightSide": true,
+    "show": true,
+    "sort": "avg",
+    "sortDesc": true,
+    "total": false,
+    "values": true
+  },
+  "lines": true,
+  "linewidth": 1,
+  "links": [],
+  "nullPointMode": "null",
+  "paceLength": 10,
+  "percentage": false,
+  "pointradius": 5,
+  "points": false,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "stack": false,
+  "steppedLine": false,
+  "targets": [
+    {
+      "expr": "sum(irate(container_cpu_usage_seconds_total{container_name=\"$container\"}[30s])) by (id,pod_name)",
+      "interval": "",
+      "intervalFactor": 2,
+      "legendFormat": "{{pod_name}}",
+      "refId": "A",
+      "step": 2,
+      "format": "time_series"
+    },
+    {
+      "expr": "sum(container_spec_cpu_quota{container_name=\"$container\"} / container_spec_cpu_period{container_name=\"$container\"}) by (container_name) / count(container_memory_usage_bytes{container_name=\"$container\"}) by (container_name) ",
+      "intervalFactor": 2,
+      "legendFormat": "limit",
+      "refId": "B",
+      "step": 2,
+      "format": "time_series"
+    },
+    {
+      "expr": "sum(container_spec_cpu_shares{container_name=\"$container\"} / 1024) by (namespace,container_name) / count(container_spec_cpu_shares{container_name=\"$container\"}) by (namespace,container_name)",
+      "intervalFactor": 2,
+      "legendFormat": "request",
+      "refId": "C",
+      "step": 2,
+      "format": "time_series"
+    }
+  ],
+  "thresholds": [],
+  "timeFrom": null,
+  "timeRegions": [],
+  "timeShift": null,
+  "title": "Cpu usage (per pod)",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "format": "short",
+      "label": "cores",
+      "logBase": 1,
+      "max": null,
+      "min": "0",
+      "show": true
+    },
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "spaceLength": 10
+}
